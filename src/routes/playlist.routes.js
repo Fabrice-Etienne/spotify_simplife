@@ -1,35 +1,27 @@
-const express = require('express')
-const router = express.Router()
-
-const Playlist = require('../models/Playlist')
-const Track = require('../models/Track')
-const auth = require('../middlewares/auth.middleware')
-
-router.post('/', auth, async (req, res) => {
-  const playlist = await Playlist.create({
-    ...req.body,
-    UserId: req.user.id
-  })
-
-  res.json(playlist)
-})
-
-router.get('/', auth, async (req, res) => {
-  const playlists = await Playlist.findAll({
-    where: { UserId: req.user.id },
-    include: Track
-  })
-
-  res.json(playlists)
-})
-
 router.post('/:playlistId/tracks/:trackId', auth, async (req, res) => {
-  const playlist = await Playlist.findByPk(req.params.playlistId)
-  const track = await Track.findByPk(req.params.trackId)
+  try {
+    const playlist = await Playlist.findOne({
+      where: {
+        id: req.params.playlistId,
+        UserId: req.user.id
+      }
+    })
 
-  await playlist.addTrack(track)
+    if (!playlist) {
+      return res.status(404).json({ message: 'Playlist introuvable' })
+    }
 
-  res.json({ message: 'Track ajoutée' })
+    const track = await Track.findByPk(req.params.trackId)
+
+    if (!track) {
+      return res.status(404).json({ message: 'Track introuvable' })
+    }
+
+    await playlist.addTrack(track)
+
+    res.json({ message: 'Track ajoutée à la playlist' })
+
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' })
+  }
 })
-
-module.exports = router
