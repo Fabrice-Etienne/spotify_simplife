@@ -3,30 +3,33 @@ const router = express.Router()
 
 const Playlist = require('../models/Playlist')
 const Track = require('../models/Track')
+const auth = require('../middlewares/auth.middleware')
 
-// CREATE PLAYLIST
-router.post('/', async (req, res) => {
-  const playlist = await Playlist.create(req.body)
+router.post('/', auth, async (req, res) => {
+  const playlist = await Playlist.create({
+    ...req.body,
+    UserId: req.user.id
+  })
+
   res.json(playlist)
 })
 
-// ADD TRACK TO PLAYLIST
-router.post('/:playlistId/tracks/:trackId', async (req, res) => {
+router.get('/', auth, async (req, res) => {
+  const playlists = await Playlist.findAll({
+    where: { UserId: req.user.id },
+    include: Track
+  })
+
+  res.json(playlists)
+})
+
+router.post('/:playlistId/tracks/:trackId', auth, async (req, res) => {
   const playlist = await Playlist.findByPk(req.params.playlistId)
   const track = await Track.findByPk(req.params.trackId)
 
   await playlist.addTrack(track)
 
-  res.json({ message: 'Track added to playlist' })
-})
-
-// GET PLAYLIST WITH TRACKS
-router.get('/:id', async (req, res) => {
-  const playlist = await Playlist.findByPk(req.params.id, {
-    include: Track
-  })
-
-  res.json(playlist)
+  res.json({ message: 'Track ajoutée' })
 })
 
 module.exports = router
