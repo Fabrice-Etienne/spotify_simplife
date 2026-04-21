@@ -1,10 +1,19 @@
 <template>
-  <div>
-    <h2>Register</h2>
-    <input v-model="username" placeholder="Username" />
-    <input v-model="email" placeholder="Email" />
-    <input v-model="password" type="password" placeholder="Password" />
-    <button @click="register">Créer un compte</button>
+  <div class="container">
+    <div class="card">
+      <h2 class="center">Créer un compte</h2>
+
+      <input v-model="username" placeholder="Username" />
+      <input v-model="email" placeholder="Email" />
+      <input v-model="password" type="password" placeholder="Password" />
+
+      <button @click="register">S'inscrire</button>
+
+      <p class="center">
+        Déjà un compte ?
+        <router-link to="/login">Se connecter</router-link>
+      </p>
+    </div>
   </div>
 </template>
 
