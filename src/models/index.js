@@ -4,8 +4,8 @@ const Playlist = require('./Playlist')
 const PlaylistTrack = require('./PlaylistTrack')
 
 // User → Playlist
-User.hasMany(Playlist)
-Playlist.belongsTo(User)
+User.hasMany(Playlist, { foreignKey: 'userId' })
+Playlist.belongsTo(User, { foreignKey: 'userId' })
 
 // Playlist ↔ Track (many-to-many)
 Playlist.belongsToMany(Track, { through: PlaylistTrack })
@@ -16,4 +16,4 @@ module.exports = {
   Track,
   Playlist,
   PlaylistTrack
-};
+}

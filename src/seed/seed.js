@@ -1,51 +1,100 @@
-const sequelize = require('../config/database')
 const bcrypt = require('bcrypt')
-require('../models')
-
-const User = require('../models/User')
-const Track = require('../models/Track')
-const Playlist = require('../models/Playlist')
+const { User, Track, Playlist, PlaylistTrack } = require('../models')
+const sequelize = require('../config/database')
 
 const seed = async () => {
   try {
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
     await sequelize.sync({ force: true })
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+    console.log('🗑️  Tables réinitialisées')
 
-    const hashedPassword = await bcrypt.hash('123456', 10)
+    // Création des utilisateurs
+    const hashedPassword = await bcrypt.hash('password123', 10)
 
-    const user = await User.create({
-      username: 'testuser',
-      email: 'test@mail.com',
+    const alice = await User.create({
+      username: 'alice',
+      email: 'alice@test.com',
       password: hashedPassword
     })
 
-    const track1 = await Track.create({
-      title: 'Blinding Lights',
-      artist: 'The Weeknd',
-      url: 'https://example.com/1'
+    const bob = await User.create({
+      username: 'bob',
+      email: 'bob@test.com',
+      password: hashedPassword
     })
 
-    const track2 = await Track.create({
-      title: 'Shape of You',
-      artist: 'Ed Sheeran',
-      url: 'https://example.com/2'
+    console.log('👤 Utilisateurs créés')
+
+    // Création des tracks
+    const tracks = await Track.bulkCreate([
+      {
+        title: 'Bohemian Rhapsody',
+        artist: 'Queen',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        image: 'https://upload.wikimedia.org/wikipedia/en/4/4d/Queen_Bohemian_Rhapsody.png'
+      },
+      {
+        title: 'Blinding Lights',
+        artist: 'The Weeknd',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+        image: 'https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png'
+      },
+      {
+        title: 'Shape of You',
+        artist: 'Ed Sheeran',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+        image: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Ed_Sheeran_-_Shape_of_You.png'
+      },
+      {
+        title: 'Lose Yourself',
+        artist: 'Eminem',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+        image: null
+      },
+      {
+        title: 'Smells Like Teen Spirit',
+        artist: 'Nirvana',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+        image: null
+      }
+    ])
+
+    console.log('🎵 Tracks créées')
+
+    // Création des playlists
+    const playlist1 = await Playlist.create({
+      name: 'Mes classiques',
+      userId: alice.id
     })
 
-    const playlist = await Playlist.create({
-      name: 'My Playlist',
-      UserId: user.id
+    const playlist2 = await Playlist.create({
+      name: 'Workout 🔥',
+      userId: alice.id
     })
 
-    await playlist.addTrack(track1)
-    await playlist.addTrack(track2)
+    const playlist3 = await Playlist.create({
+      name: 'Chill vibes',
+      userId: bob.id
+    })
 
-    console.log('Seed terminé avec succès 🚀')
+    console.log('📋 Playlists créées')
 
-    process.exit()
+    // Association tracks ↔ playlists
+    await playlist1.addTracks([tracks[0], tracks[4]]) // Queen + Nirvana
+    await playlist2.addTracks([tracks[1], tracks[2], tracks[3]]) // Weeknd + Sheeran + Eminem
+    await playlist3.addTracks([tracks[0], tracks[2]]) // Queen + Sheeran
 
+    console.log('🔗 Tracks associées aux playlists')
+
+    console.log('✅ Seed terminé avec succès !')
+    console.log('---')
+    console.log('👤 Comptes de test :')
+    console.log('   alice@test.com / password123')
+    console.log('   bob@test.com   / password123')
+
+    process.exit(0)
   } catch (err) {
-    console.error('Erreur seed :', err)
+    console.error('❌ Erreur seed:', err.message)
+    process.exit(1)
   }
 }
 

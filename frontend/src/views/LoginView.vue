@@ -1,15 +1,21 @@
 <template>
   <div class="container">
     <div class="card">
-      <h2 class="center">Connexion</h2>
+      <h2 class="center">Se connecter</h2>
 
-      <input v-model="email" placeholder="Email" />
-      <input v-model="password" type="password" placeholder="Password" />
+      <form @submit.prevent="handleLogin">
+        <input v-model="email" type="email" placeholder="Email" required />
+        <input v-model="password" type="password" placeholder="Mot de passe" required />
 
-      <button @click="login">Se connecter</button>
+        <p v-if="error" style="color: red; margin-top: 10px; text-align: center;">
+          {{ error }}
+        </p>
 
-      <p class="center">
-        Pas de compte ?
+        <button type="submit">Se connecter</button>
+      </form>
+
+      <p class="center" style="margin-top: 15px;">
+        Pas encore de compte ?
         <router-link to="/register">Créer un compte</router-link>
       </p>
     </div>
@@ -23,25 +29,23 @@ import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
+const error = ref('')
 const router = useRouter()
 
-const login = async () => {
+const handleLogin = async () => {
+  error.value = ''
   try {
-    console.log("LOGIN CLICKED")
-
     const res = await api.post('/auth/login', {
       email: email.value,
       password: password.value
     })
 
-    console.log("LOGIN SUCCESS", res.data)
-    console.log("RESPONSE", res.data)
     localStorage.setItem('token', res.data.token)
+    localStorage.setItem('user', JSON.stringify(res.data.user))
 
     router.push('/home')
-
   } catch (err) {
-    console.log("LOGIN ERROR:", err.response?.data || err.message)
+    error.value = err.response?.data?.message || 'Erreur lors de la connexion'
   }
 }
 </script>
