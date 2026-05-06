@@ -30,31 +30,31 @@ const seed = async () => {
         title: 'Bohemian Rhapsody',
         artist: 'Queen',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        image: 'https://upload.wikimedia.org/wikipedia/en/4/4d/Queen_Bohemian_Rhapsody.png'
+        image: 'https://picsum.photos/seed/queen/150'
       },
       {
         title: 'Blinding Lights',
         artist: 'The Weeknd',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-        image: 'https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png'
+        image: 'https://picsum.photos/seed/weeknd/150'
       },
       {
         title: 'Shape of You',
         artist: 'Ed Sheeran',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-        image: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Ed_Sheeran_-_Shape_of_You.png'
+        image: 'https://picsum.photos/seed/sheeran/150'
       },
       {
         title: 'Lose Yourself',
         artist: 'Eminem',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-        image: null
+        image: 'https://picsum.photos/seed/eminem/150'
       },
       {
         title: 'Smells Like Teen Spirit',
         artist: 'Nirvana',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-        image: null
+        image: 'https://picsum.photos/seed/nirvana/150'
       }
     ])
 
