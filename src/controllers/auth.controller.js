@@ -1,16 +1,52 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const { body, validationResult } = require('express-validator')
 
-// REGISTER
+// ─── RÈGLES DE VALIDATION ─────────────────────────────────
+
+exports.registerValidation = [
+  body('username')
+    .trim()
+    .notEmpty().withMessage('Le nom d\'utilisateur est requis')
+    .isLength({ min: 3, max: 30 }).withMessage('Le nom doit faire entre 3 et 30 caractères')
+    .matches(/^[a-zA-Z0-9_]+$/).withMessage('Caractères autorisés : lettres, chiffres, underscore'),
+
+  body('email')
+    .trim()
+    .notEmpty().withMessage('L\'email est requis')
+    .isEmail().withMessage('Email invalide')
+    .normalizeEmail(),
+
+  body('password')
+    .notEmpty().withMessage('Le mot de passe est requis')
+    .isLength({ min: 6 }).withMessage('Le mot de passe doit faire au moins 6 caractères')
+]
+
+exports.loginValidation = [
+  body('email')
+    .trim()
+    .notEmpty().withMessage('L\'email est requis')
+    .isEmail().withMessage('Email invalide')
+    .normalizeEmail(),
+
+  body('password')
+    .notEmpty().withMessage('Le mot de passe est requis')
+]
+
+// ─── REGISTER ─────────────────────────────────────────────
+
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body
-
-    // Validation basique des champs
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: 'Tous les champs sont requis' })
+    // Vérification des erreurs de validation
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0].msg
+      })
     }
+
+    const { username, email, password } = req.body
 
     const existingUser = await User.findOne({ where: { email } })
     if (existingUser) {
@@ -25,7 +61,6 @@ exports.register = async (req, res) => {
       password: hashedPassword
     })
 
-    // On ne renvoie jamais le mot de passe, même hashé
     res.status(201).json({
       message: 'Utilisateur créé avec succès',
       user: {
@@ -39,18 +74,21 @@ exports.register = async (req, res) => {
   }
 }
 
-// LOGIN
+// ─── LOGIN ────────────────────────────────────────────────
+
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body
-
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email et mot de passe requis' })
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0].msg
+      })
     }
+
+    const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
     if (!user) {
-      // Message volontairement générique pour ne pas révéler si l'email existe
       return res.status(401).json({ message: 'Identifiants invalides' })
     }
 
