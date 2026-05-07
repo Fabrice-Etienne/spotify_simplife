@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import PlaylistsView from '../views/PlaylistsView.vue'
+import PlaylistDetailView from '../views/PlaylistDetailView.vue'
 import Layout from '../components/Layout.vue'
 
 const routes = [
@@ -20,7 +21,8 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'home', component: HomeView },
-      { path: 'playlists', component: PlaylistsView }
+      { path: 'playlists', component: PlaylistsView },
+      { path: 'playlists/:id', component: PlaylistDetailView }
     ]
   }
 ]

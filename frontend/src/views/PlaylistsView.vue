@@ -21,23 +21,25 @@
     </div>
 
     <div class="grid">
-      <div
-        class="track-card"
-        v-for="playlist in playlists"
-        :key="playlist.id"
-      >
-        <div style="font-size: 40px; text-align: center; padding: 20px;">🎵</div>
-        <h3>{{ playlist.name }}</h3>
-        <p style="color: var(--text-secondary); font-size: 13px;">
-          {{ playlist.Tracks.length }} morceau(x)
-        </p>
-        <button
-          style="background: #e53e3e; margin-top: 10px; padding: 6px; font-size: 12px;"
-          @click="deletePlaylist(playlist.id)"
+        <div
+            class="track-card"
+            v-for="playlist in playlists"
+            :key="playlist.id"
+            @click="router.push(`/playlists/${playlist.id}`)"
+            style="cursor: pointer;"
         >
-          Supprimer
-        </button>
-      </div>
+            <div style="font-size: 40px; text-align: center; padding: 20px;">🎵</div>
+            <h3>{{ playlist.name }}</h3>
+            <p style="color: var(--text-secondary); font-size: 13px;">
+            {{ playlist.Tracks.length }} morceau(x)
+            </p>
+            <button
+            style="background: #e53e3e; margin-top: 10px; padding: 6px; font-size: 12px;"
+            @click.stop="deletePlaylist(playlist.id)"
+            >
+            Supprimer
+            </button>
+        </div>
     </div>
   </div>
 </template>
@@ -45,7 +47,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '../api/axios'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const playlists = ref([])
 const newPlaylistName = ref('')
 const showForm = ref(false)
