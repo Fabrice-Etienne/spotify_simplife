@@ -108,20 +108,3 @@ const removeTrack = async (trackId) => {
 
 onMounted(fetchPlaylist)
 </script>
-
-<style scoped>
-.track-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-bottom: 5px;
-}
-
-.track-row:hover {
-  background: var(--bg-card);
-}
-</style>
