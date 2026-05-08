@@ -12,6 +12,12 @@
       <router-link to="/playlists" class="nav-link" :class="{ active: route.path.startsWith('/playlists') }">
         📋 Playlists
       </router-link>
+      <router-link to="/account" class="nav-link" :class="{ active: route.path === '/account' }">
+        👤 Mon compte
+      </router-link>
+      <router-link to="/privacy" class="nav-link" :class="{ active: route.path === '/privacy' }">
+        🔐 Confidentialité
+      </router-link>
     </nav>
 
     <!-- User connecté -->

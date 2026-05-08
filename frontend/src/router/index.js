@@ -7,6 +7,8 @@ import HomeView from '../views/HomeView.vue'
 import PlaylistsView from '../views/PlaylistsView.vue'
 import PlaylistDetailView from '../views/PlaylistDetailView.vue'
 import Layout from '../components/Layout.vue'
+import PrivacyView from '../views/PrivacyView.vue'
+import AccountView from '../views/AccountView.vue'
 
 const routes = [
   // Routes publiques
@@ -22,7 +24,9 @@ const routes = [
     children: [
       { path: 'home', component: HomeView },
       { path: 'playlists', component: PlaylistsView },
-      { path: 'playlists/:id', component: PlaylistDetailView }
+      { path: 'playlists/:id', component: PlaylistDetailView },
+      { path: 'privacy', component: PrivacyView },
+      { path: 'account', component: AccountView }
     ]
   }
 ]
