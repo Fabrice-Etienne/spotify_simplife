@@ -61,6 +61,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '../api/axios'
+import { useHead } from '@unhead/vue'
 
 const router = useRouter()
 const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
@@ -93,4 +94,11 @@ const deleteAccount = async () => {
     alert(err.response?.data?.message || 'Erreur lors de la suppression')
   }
 }
+
+useHead({
+  title: 'Mon Compte — SpotifyLight',
+  meta: [
+    { name: 'robots', content: 'noindex' }
+  ]
+})
 </script>

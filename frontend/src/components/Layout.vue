@@ -14,16 +14,3 @@ import Sidebar from './Sidebar.vue'
 import Player from './Player.vue'
 import CookieBanner from './CookieBanner.vue'
 </script>
-
-<style scoped>
-.layout {
-  display: flex;
-}
-
-.content {
-  margin-left: 220px;
-  width: 100%;
-  padding: 20px;
-  padding-bottom: 90px;
-}
-</style>

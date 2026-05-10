@@ -18,12 +18,6 @@
             :src="track.image || 'https://via.placeholder.com/150'"
             :alt="track.title"
           />
-          <div
-            v-if="playerStore.currentTrack?.id === track.id && playerStore.isPlaying"
-            style="position: absolute; top: 5px; right: 5px; background: var(--primary); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 10px;"
-          >
-            ▶
-          </div>
         </div>
 
         <h3 style="margin-top: 8px; font-size: 14px;">{{ track.title }}</h3>
@@ -79,6 +73,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import api from '../api/axios'
 import { useRouter } from 'vue-router'
 import { playerStore } from '../store/player'
+import { useHead } from '@unhead/vue'
 
 const tracks = ref([])
 const playlists = ref([])
@@ -138,4 +133,11 @@ const showNotification = (msg) => {
     notification.value = ''
   }, 3000)
 }
+
+useHead({
+  title: 'Accueil — SpotifyLight',
+  meta: [
+    { name: 'description', content: 'Découvre et écoute tous les morceaux disponibles.' }
+  ]
+})
 </script>

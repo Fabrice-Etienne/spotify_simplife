@@ -27,6 +27,7 @@
 import { ref } from 'vue'
 import api from '../api/axios'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 
 const username = ref('')
 const email = ref('')
@@ -48,4 +49,11 @@ const handleRegister = async () => {
     error.value = err.response?.data?.message || "Erreur lors de l'inscription"
   }
 }
+
+useHead({
+  title: 'Créer un compte — SpotifyLight',
+  meta: [
+    { name: 'description', content: 'Crée ton compte SpotifyLight gratuitement.' }
+  ]
+})
 </script>

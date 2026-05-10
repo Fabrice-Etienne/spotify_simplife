@@ -66,5 +66,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useHead } from '@unhead/vue'
+
 const isSpinning = ref(true)
+
+useHead({
+  title: 'SpotifyLight — Ta musique, sans limites',
+  meta: [
+    { name: 'description', content: 'Écoute tes morceaux préférés et crée tes playlists personnalisées.' }
+  ]
+})
 </script>

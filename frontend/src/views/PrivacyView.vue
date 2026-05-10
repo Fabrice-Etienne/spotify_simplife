@@ -63,3 +63,14 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Créer un compte — SpotifyLight',
+  meta: [
+    { name: 'description', content: 'Crée ton compte SpotifyLight gratuitement.' }
+  ]
+})
+</script>

@@ -230,4 +230,4 @@ Tests: 9 passed, 9 total
 
 ## Auteur : Fabrice-Etienne ONDO-MBA
 
-Projet réalisé dans le cadre du Hackathon Full Stack — EEMI 2026
+Projet réalisé dans le cadre du Hackathon Full Stack — EEMI 2026 

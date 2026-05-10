@@ -48,6 +48,7 @@
 import { ref, onMounted } from 'vue'
 import api from '../api/axios'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 
 const router = useRouter()
 const playlists = ref([])
@@ -79,6 +80,12 @@ const deletePlaylist = async (id) => {
     alert(err.response?.data?.message || 'Erreur')
   }
 }
+useHead({
+  title: 'Mes Playlists — SpotifyLight',
+  meta: [
+    { name: 'description', content: 'Gère tes playlists personnalisées.' }
+  ]
+})
 
 onMounted(fetchPlaylists)
 </script>

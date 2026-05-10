@@ -26,6 +26,7 @@
 import { ref } from 'vue'
 import api from '../api/axios'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 
 const email = ref('')
 const password = ref('')
@@ -48,4 +49,11 @@ const handleLogin = async () => {
     error.value = err.response?.data?.message || 'Erreur lors de la connexion'
   }
 }
+
+useHead({
+  title: 'Connexion — SpotifyLight',
+  meta: [
+    { name: 'description', content: 'Connecte-toi à ton compte SpotifyLight.' }
+  ]
+})
 </script>
