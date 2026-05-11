@@ -227,6 +227,38 @@ Tests: 9 passed, 9 total
 ---
 ### MCD
 
+## Déploiement
+
+L'application est déployée et accessible en ligne :
+
+| Service | URL | Plateforme |
+|---|---|---|
+| Frontend | https://spotify-simplife.vercel.app | Vercel |
+| Backend API | https://spotifysimplife-production.up.railway.app | Railway |
+
+### Infrastructure de déploiement
+
+- **Frontend** — déployé sur Vercel, connecté au repo GitHub (déploiement automatique à chaque push sur `main`)
+- **Backend** — déployé sur Railway avec une instance MySQL managée
+- **Base de données** — MySQL 8.0 hébergée sur Railway
+
+### Variables d'environnement en production
+
+**Backend (Railway) :**
+| Variable | Description |
+|---|---|
+| `DB_HOST` | Hôte MySQL Railway |
+| `DB_USER` | Utilisateur MySQL |
+| `DB_PASSWORD` | Mot de passe MySQL |
+| `DB_NAME` | Nom de la base de données |
+| `DB_PORT` | Port MySQL (8080) |
+| `JWT_SECRET` | Clé secrète JWT |
+| `FRONTEND_URL` | URL du frontend Vercel |
+
+**Frontend (Vercel) :**
+| Variable | Description |
+|---|---|
+| `VITE_API_URL` | URL de l'API backend Railway |
 
 ## Auteur : Fabrice-Etienne ONDO-MBA
 
