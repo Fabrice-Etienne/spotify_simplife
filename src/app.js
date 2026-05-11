@@ -9,14 +9,26 @@ require('./models');
 
 const app = express();
 
-// ─── SÉCURITÉ ─────────────────────────────────────────────
+// ─── CORS — doit être avant tout le reste ─────────────────
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'https://spotify-simplife.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
 
-// Helmet — sécurise les headers HTTP
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions)) // Preflight pour toutes les routes
+
+// ─── SÉCURITÉ ─────────────────────────────────────────────
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-// Rate limiting global — 100 requêtes / 15 min par IP
+// Rate limiting global
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -25,7 +37,7 @@ const globalLimiter = rateLimit({
   legacyHeaders: false
 })
 
-// Rate limiting strict sur l'auth — 10 tentatives / 15 min
+// Rate limiting auth
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
@@ -37,15 +49,7 @@ const authLimiter = rateLimit({
 app.use(globalLimiter);
 
 // ─── MIDDLEWARES ───────────────────────────────────────────
-
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://spotify-simplife.vercel.app'
-  ],
-  credentials: true
-}));
-app.use(express.json({ limit: '10kb' })); // Limite la taille du body
+app.use(express.json({ limit: '10kb' }))
 
 app.use((req, res, next) => {
   console.log("➡️ REQUEST:", req.method, req.url)
@@ -53,7 +57,6 @@ app.use((req, res, next) => {
 })
 
 // ─── ROUTES ───────────────────────────────────────────────
-
 app.get('/', (req, res) => {
   res.json({ message: 'SpotifySimplifee API OK 🚀' });
 });
@@ -64,19 +67,15 @@ app.use('/api/tracks', require('./routes/track.routes'));
 app.use('/api/playlists', require('./routes/playlist.routes'));
 
 // ─── GESTION DES ERREURS ──────────────────────────────────
-
-// Route inexistante
 app.use((req, res) => {
   res.status(404).json({ message: 'Route introuvable' });
 });
 
-// Erreur globale
 app.use((err, req, res, next) => {
   console.error('❌ Erreur:', err.message);
   res.status(500).json({ message: 'Erreur interne du serveur' });
 });
 
-// Export pour les tests
 module.exports = { app, sequelize };
 
 if (require.main === module) {
