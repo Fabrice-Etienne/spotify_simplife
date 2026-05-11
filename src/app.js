@@ -21,7 +21,7 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-app.options('*', cors(corsOptions)) // Preflight pour toutes les routes
+app.options(/(.*)/, cors(corsOptions))
 
 // ─── SÉCURITÉ ─────────────────────────────────────────────
 app.use(helmet({
